@@ -1,2 +1,2 @@
 # OnlineTicketingSystemCore
-Using .Net Core, MVC with MSSQL
+Using C#, .Net Core, MVC with MSSQL
