@@ -1,0 +1,88 @@
+﻿@model IEnumerable<OnlineTicketingSystemCore.Models.Ticket>
+
+@{
+    ViewData["Title"] = lan["Home"];
+}
+
+<h1>@lan["Home"]</h1>
+
+<p>
+    <a asp-action="Create">@lan["New"]</a>
+    @*@Html.ActionLink(lan["New"], "Create")*@
+</p>
+<!--<a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Create">@lan["New"]</a>-->
+<table class="table">
+    <thead>
+        <tr>
+            <!--<th>
+                @*@Html.DisplayNameFor(model => model.TicketId)*@
+            </th>-->
+            <th>
+                @*@Html.DisplayNameFor(model => model.DeptRefId)*@
+                @Html.ActionLink(lan["Department"], "Index", new { sortOrder = ViewBag.DeptSortParm })
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.ProjectRefId)*@
+                @Html.ActionLink(lan["Project"], "Index", new { sortOrder = ViewBag.ProjSortParm })
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.EmpRefId)*@
+                @Html.ActionLink(lan["Employee"], "Index", new { sortOrder = ViewBag.EmpSortParm })
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Description)*@
+                @Html.ActionLink(lan["Description"], "Index", new { sortOrder = ViewBag.DesSortParm })
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.SubmitDate)*@
+                @Html.ActionLink(lan["SubmitDate"], "Index", new { sortOrder = ViewBag.DateSortParm })
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Status)*@
+                @Html.ActionLink(lan["Status"], "Index", new { sortOrder = ViewBag.StatusSortParm })
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <!--<td>
+                    @Html.DisplayFor(modelItem => item.TicketId)
+                </td>-->
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.DeptName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.ProjectTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.EmpName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmitDate)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Status)*@
+                    @if (item.Status == "O")
+                    {
+                        <span>Open</span>
+                    }
+                    else if (item.Status == "C")
+                    {
+                        <span>Close</span>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TicketId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.TicketId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TicketId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

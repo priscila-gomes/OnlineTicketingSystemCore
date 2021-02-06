@@ -1,0 +1,81 @@
+﻿@model OnlineTicketingSystemCore.Models.Ticket
+
+@{
+    ViewData["Title"] = lan["Delete"];
+}
+
+<h1>@lan["Delete"]</h1>
+
+<h3>@lan["DeleteMsg"]</h3>
+<div>
+    <h4>@lan["Ticket"]</h4>
+    <hr />
+    <dl class="row">
+        <!--<dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TicketId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TicketId)
+        </dd>-->
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeptRefId)
+            @*@lan["Department"]*@
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.DeptRefId)*@
+            @Html.DisplayFor(model => model.Department.DeptName)
+        </dd>
+        <dt class="col-sm-2">
+            @*@Html.DisplayNameFor(model => model.ProjectRefId)*@
+            @Html.DisplayNameFor(model => model.ProjectRefId)
+            @*@lan["Project"]*@
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.ProjectRefId)*@
+            @Html.DisplayFor(model => model.Project.ProjectTitle)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EmpRefId)
+            @*@lan["Employee"]*@
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.EmpRefId)*@
+            @Html.DisplayFor(model => model.Employee.EmpName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+            @*@lan["Description"]*@
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SubmitDate)
+            @*@lan["SubmitDate"]*@
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SubmitDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+            @*@lan["Status"]*@
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Status)*@
+            @if (Model.Status == "O")
+            {
+                <span>Open</span>
+            }
+            else if (Model.Status == "C")
+            {
+                <span>Close</span>
+            }
+        </dd>
+    </dl>
+    
+    <form method="post" asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">@lan["Back"]</a>
+    </form>
+</div>

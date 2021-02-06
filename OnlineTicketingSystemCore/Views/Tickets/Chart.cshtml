@@ -1,0 +1,99 @@
+﻿@*@using System.Web.Helpers*@
+@model IEnumerable<OnlineTicketingSystemCore.Models.Charts>
+@{
+    ViewData["Title"] = lan["Reports"];
+}
+
+<h1>@lan["Reports"]</h1>
+<h4>@lan["Ticket"]</h4>
+<hr />
+<!--<form method="get">-->
+<p>
+    <span style="font-weight:bold">
+        @lan["ChartType"]
+    </span>&nbsp;&nbsp;&nbsp;
+    @lan["ChartCol"] <input checked="checked" id="Chart" name="Chart" type="radio" value="Column" />&nbsp;
+    @lan["ChartBar"] <input id="Chart" name="Chart" type="radio" value="Bar" />&nbsp;
+    @lan["ChartPie"] <input id="Chart" name="Chart" type="radio" value="Pie" />&nbsp;
+    @lan["ChartLine"] <input id="Chart" name="Chart" type="radio" value="Line" />&nbsp;&nbsp;
+    <input type="button" id="btnShow" name="btnShow" value="Show" />
+</p>
+<p>
+    <span style="font-weight:bold">
+        @lan["ShowPer"]
+    </span>&nbsp;&nbsp;&nbsp;
+    @lan["Project"] <input checked="checked" id="ShowType" name="ShowType" type="radio" value="ProjectTitle" />&nbsp;
+    @lan["Department"] <input id="ShowType" name="ShowType" type="radio" value="DeptName" />&nbsp;
+    @lan["Employee"] <input id="ShowType" name="ShowType" type="radio" value="EmpName" />&nbsp;
+    @lan["Status"] <input id="ShowType" name="ShowType" type="radio" value="Status" />&nbsp;
+    @lan["Year"] <input id="ShowType" name="ShowType" type="radio" value="Year" />
+</p>
+<!--</form>-->
+<div>
+    @{
+        //if(IsPost)
+        /*if (ViewBag.Method == "POST")
+        {
+            string chartType = ViewBag.Chart;// Request.Form["Chart"];
+            string showType = ViewBag.ShowType;//Request.Form["ShowType"];*/
+
+            //var chart = new Chart(width: 500, height: 500); // (width: 500, height: 500, theme: ChartTheme.Blue)
+            //.AddTitle(lan["ChartTitle"])
+            //.AddSeries("Default", chartType: @chartType, //"column",
+            //          xValue: Model, xField: @showType,//"ProjectTitle",
+            //        yValues: Model, yFields: "TotTickets");
+            //.ToWebImage();// .Write();
+        //}
+    }
+</div>
+<script language="JavaScript" type="text/javascript" src="~/lib/jquery/dist/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $("#btnShow").click(function () {
+            var showType = $("input[name='ShowType']:checked").val(); //$("#ShowType").val();
+            var chartType = $("input[name='Chart']:checked").val(); //$("#Chart").val();
+            var showChart;
+            //alert("showType = " + showType + " chartType = "+chartType);
+            
+            $.getJSON("../Tickets/ChartData", { ShowType: showType },
+                function (result) {
+                    //alert("result = " + result);
+                    //var x = result.toString();
+                    //alert("x = "+x);
+                    google.charts.load('current', {
+                        'packages': ['corechart']
+                    });
+                    google.charts.setOnLoadCallback(function () {
+                        drawChart(result);
+                    });
+                });
+
+            function drawChart(result) {
+                var data = new google.visualization.DataTable(result);
+                //alert(data);
+                var options = {
+                    title: document.getElementById('chartTitle').innerHTML, //'Pie Chart: How Much Products Sold By Last Night',
+                    width: 600,
+                    height: 500
+                };
+                document.getElementById('chart').style.visibility = "visible";
+                if (chartType == "Column") { showChart = new google.visualization.ColumnChart(document.getElementById('chart')); }
+                else if (chartType == "Bar") { showChart = new google.visualization.BarChart(document.getElementById('chart')); }
+                else if (chartType == "Pie") { showChart = new google.visualization.PieChart(document.getElementById('chart')); }
+                else if (chartType == "Line") { showChart = new google.visualization.LineChart(document.getElementById('chart')); }
+
+                showChart.draw(data, options);
+            }
+
+        });
+    });
+
+</script>
+
+<h2 id="chartTitle" style="visibility:hidden">@lan["ChartTitle"]</h2>
+<div id="chart" style="border: 1px solid #ccc;visibility:hidden;width:620px;height:520px;"></div>
+
+
+

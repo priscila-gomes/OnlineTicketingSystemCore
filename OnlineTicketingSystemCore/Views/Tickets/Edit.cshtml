@@ -1,0 +1,123 @@
+﻿@model OnlineTicketingSystemCore.Models.Ticket
+
+@{
+    ViewData["Title"] = lan["Edit"];
+}
+
+<h1>@lan["Edit"]</h1>
+
+<h4>@lan["Ticket"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <!--<div class="form-group">
+        <label asp-for="TicketId" class="control-label"></label>
+        <input asp-for="TicketId" class="form-control" />
+        <span asp-validation-for="TicketId" class="text-danger"></span>
+    </div>-->
+            @Html.HiddenFor(model => model.SubmitDate)
+            @Html.HiddenFor(model => model.TicketId)
+            <div class="form-group">
+                <!--<label asp-for="ProjectRefId" class="control-label"></label>
+        <input asp-for="ProjectRefId" class="form-control" />
+        <span asp-validation-for="ProjectRefId" class="text-danger"></span>-->
+                @Html.LabelFor(model => model.ProjectRefId, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("ProjectRefId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProjectRefId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <!--<label asp-for="DeptRefId" class="control-label"></label>
+        <input asp-for="DeptRefId" class="form-control" />
+        <span asp-validation-for="DeptRefId" class="text-danger"></span>-->
+                @Html.LabelFor(model => model.DeptRefId, htmlAttributes: new { @class = "control-label" })
+                @*@Html.DropDownList("DeptRefId", null, "--Select Department--", htmlAttributes: new { @class = "form-control", id = "ddlDeptEdit" })*@
+                <select asp-for="DeptRefId" asp-items="@ViewBag.DeptRefId" class="form-control" id="ddlDeptEdit">
+                    <option value="">--Select Department--</option>
+                </select>
+                @Html.ValidationMessageFor(model => model.DeptRefId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <!--<label asp-for="EmpRefId" class="control-label"></label>
+        <input asp-for="EmpRefId" class="form-control" />
+        <span asp-validation-for="EmpRefId" class="text-danger"></span>-->
+                @Html.LabelFor(model => model.EmpRefId, htmlAttributes: new { @class = "control-label" })
+                @*@Html.DropDownList("EmpRefId", null, "--Select Employee--", htmlAttributes: new { @class = "form-control", id = "ddlEmpEdit" })*@
+                <select asp-for="EmpRefId" asp-items="@ViewBag.EmpRefId" class="form-control" id="ddlEmpEdit">
+                    <option value="">--Select Employee--</option>
+                </select>
+                @Html.ValidationMessageFor(model => model.EmpRefId, "", new { @class = "text-danger" })
+            </div>
+            <script language="JavaScript" type="text/javascript" src="~/lib/jquery/dist/jquery-3.5.1.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#ddlDeptEdit").change(function () {
+                        var deptId = $(this).val();
+                        var select = $("#ddlEmpEdit");
+                        select.empty();
+                        select.append($('<option/>', {
+                            value: "",
+                            text: "--Select Employee--"
+                        }));
+                        //alert("deptId = " + deptId);
+                        $.getJSON("../../Tickets/getEmployee", { DeptRefId: deptId },
+                            function (classesData) {
+                                /*var select = $("#ddlEmpEdit");
+                                select.empty();
+                                select.append($('<option/>', {
+                                    value: 0,
+                                    text: "--Select Employee--"
+                                }));*/
+                                $.each(classesData, function (index, itemData) {
+                                    //alert(classesData);
+                                    //alert(itemData);
+                                    select.append($('<option/>', {
+                                        value: itemData.value,
+                                        text: itemData.text
+                                    }));
+                                });
+                            });
+                    });
+                });
+            </script>
+
+
+            <div class="form-group">
+                <!--<label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>-->
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Description, 10, 40, null)
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+            <!--<div class="form-group">-->
+            <!--<label asp-for="SubmitDate" class="control-label"></label>
+    <input asp-for="SubmitDate" class="form-control" />
+    <span asp-validation-for="SubmitDate" class="text-danger"></span>-->
+            @*@Html.LabelFor(model => model.SubmitDate, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.SubmitDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SubmitDate, "", new { @class = "text-danger" *@
+            <!--</div>-->
+            <div class="form-group">
+                <!--<label asp-for="Status" class="control-label"></label>
+        <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>-->
+                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("Status", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@lan["Back"]</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
